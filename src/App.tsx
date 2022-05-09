@@ -6,7 +6,7 @@ import { Header } from './components/header/Header'
 import { Login } from './components/pages/login/Login'
 import { Profile } from './components/pages/profile/Profile'
 import { SystemsPage } from './components/pages/systemsPage/SystemsPage'
-import { getUser } from './store/mainReducer'
+import { getUser } from './http/systemsApi'
 import { useTypeDispatch } from './store/store'
 
 const App = () => {

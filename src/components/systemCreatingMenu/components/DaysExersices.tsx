@@ -8,11 +8,11 @@ interface Props {
   handleChangeExersiceName: (e: any, id: number) => void
   handleChangeReps: (e: any, id: number) => void
   handleChangeWeight: (e: any, id: number) => void
-  addExerciseButton: (e: React.MouseEvent<HTMLButtonElement>) => void
+  addExercise: () => void
   decrementHandler: (e: React.MouseEvent<HTMLButtonElement>) => void
   handleNextClick: (e: React.MouseEvent<HTMLButtonElement>) => void
   addSystemHandler: (e: React.MouseEvent<HTMLButtonElement>) => void
-  validation: () => boolean
+  validate: () => boolean
   days: number | string
   currentDay: number | string
 }
@@ -23,9 +23,9 @@ export const DaysExersices: FC<Props> = ({
   handleChangeReps,
   handleChangeWeight,
   handleNextClick,
-  addExerciseButton,
+  addExercise,
   decrementHandler,
-  validation,
+  validate,
   days,
   currentDay,
   addSystemHandler
@@ -37,7 +37,6 @@ export const DaysExersices: FC<Props> = ({
           <div key={id} style={{ marginBottom: 20 }}>
             <TextField
               value={name}
-              id='outlined-basic'
               label='exercise'
               variant='outlined'
               className={styles.input}
@@ -45,7 +44,6 @@ export const DaysExersices: FC<Props> = ({
             />
             <TextField
               value={reps}
-              id='outlined-basic'
               label='reps'
               variant='outlined'
               className={styles.input}
@@ -53,7 +51,6 @@ export const DaysExersices: FC<Props> = ({
             />
             <TextField
               value={weight}
-              id='outlined-basic'
               label='weight'
               variant='outlined'
               className={styles.input}
@@ -61,7 +58,7 @@ export const DaysExersices: FC<Props> = ({
             />
           </div>
         ))}
-        <Button onClick={addExerciseButton}>Add exercise</Button>
+        <Button onClick={addExercise}>Add exercise</Button>
       </div>
       <ButtonGroup disableElevation variant='contained' className={styles.buttonGroup}>
         <Button className={styles.prevButton} onClick={decrementHandler}>
@@ -70,7 +67,7 @@ export const DaysExersices: FC<Props> = ({
         <Button
           className={styles.nextButton}
           onClick={+currentDay !== +days ? handleNextClick : addSystemHandler}
-          disabled={validation() ? false : true}
+          disabled={validate() ? false : true}
         >
           {+currentDay !== +days ? 'Next' : 'Finish'}
         </Button>

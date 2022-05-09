@@ -41,7 +41,6 @@ export const Login = () => {
     <div className={styles.container}>
       <div className={styles.textFieldContainer}>
         <TextField
-          id='outlined-basic'
           label='EMail'
           variant='outlined'
           className={styles.input}
@@ -49,12 +48,12 @@ export const Login = () => {
           onChange={handleChangeEmail}
         />
         <TextField
-          id='outlined-basic'
           label='Password'
           variant='outlined'
           className={styles.input}
           value={password}
           onChange={handleChangePassword}
+          type="password"
         />
         {isLogin ? (
           <Link style={{ marginTop: 130, textDecoration: 'none' }} to={'/registration'}>

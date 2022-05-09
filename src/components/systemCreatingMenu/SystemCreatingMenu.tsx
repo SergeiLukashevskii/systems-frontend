@@ -1,95 +1,109 @@
 import { FC, useState } from 'react'
-import { useTypeDispatch, useTypeSelector } from '../../store/store'
+import { useTypeSelector } from '../../store/store'
 import {
-  setName,
-  setDays,
-  incrementCurrentDay,
-  decrementCurrentDay,
-  setReps,
-  setWeight,
-  addExercise,
-  setExerciseName,
-  cleanStore,
-  setUserSystems
+  Exercise,
 } from '../../store/mainReducer'
 import { FORM_STEP } from './consts'
 import { GeneralInfo } from './components/GeneralInfo'
 import { DaysExersices } from './components/DaysExersices'
 import { Navigate, useNavigate } from 'react-router-dom'
-import { createSystem } from '../../http/userApi'
+import { createSystem } from '../../http/systemsApi'
+import { DaysExersicesInterface } from '../../store/mainReducer'
 
 export const SystemCreatingMenu: FC = () => {
   const navigate = useNavigate()
-  const dispatch = useTypeDispatch()
-  const name = useTypeSelector(state => state.name)
-  const days = useTypeSelector(state => state.daysCount)
-  const currentDay = useTypeSelector(state => state.currentDay)
-  const exercises = useTypeSelector(state => state.daysExersices[`day${currentDay}`])
   const user = useTypeSelector(state => state.user)
-  const daysExersices = useTypeSelector(state => state.daysExersices)
+  
+  const [currentStep, setCurrentStep] = useState<string>(FORM_STEP.GENERAL_INFO)
+  const [daysExersices, setDaysExersices] = useState<DaysExersicesInterface>({})
+  const [currentDay, setCurrentDay] = useState<number>(1);
+  const [name, setName] = useState<string>('');
+  const [daysCount, setDaysCount] = useState<string>("");
 
-  const [currentStep, setCurrentStep] = useState<String>(FORM_STEP.GENERAL_INFO)
+  const exercises = daysExersices[`day${currentDay}`];
+  
+  const addExercise = () => {
+    const newExercises = [...exercises, { name: '', reps: '', weight: '' }];
+    setDaysExersices({ ...daysExersices, [`day${currentDay}`]: newExercises });
+  }
 
-  const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => dispatch(setName(e.target.value))
-  const incrementHandler = () => {
-    if (+currentDay !== +days) dispatch(incrementCurrentDay())
+  const changeExerciseProperty = (property: keyof Exercise, value: string, id: number) => {
+    setDaysExersices((daysExercises) => {
+      const newDaysExercises = { ...daysExercises }
+      newDaysExercises[`day${currentDay}`][id][property] = value
+      return newDaysExercises
+    })
+  }
+
+  const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)
+
+  const increaseDay = () => {
+    if (currentDay !== +daysCount) setCurrentDay((currentDay) => currentDay + 1)
     else {
       setCurrentStep(FORM_STEP.FINISH)
     }
   }
-  const handleNextClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (currentStep === FORM_STEP.GENERAL_INFO) {
-      setCurrentStep(FORM_STEP.DAYS_EXERSICES)
-    } else {
-      incrementHandler()
-    }
-  }
-  const decrementHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (+currentDay !== 1) dispatch(decrementCurrentDay())
+
+  const decreaseDay = () => {
+    if (currentDay !== 1) setCurrentDay((currentDay) => currentDay - 1)
     else {
       setCurrentStep(FORM_STEP.GENERAL_INFO)
     }
   }
-  const addExerciseButton = (e: React.MouseEvent<HTMLButtonElement>) => dispatch(addExercise())
-  const handleChangeExersiceName = (e: any, id: number) => dispatch(setExerciseName({ value: e.target.value, id }))
+
+  const handleNextClick = () => {
+    if (currentStep === FORM_STEP.GENERAL_INFO) {
+      const newDaysExersices: DaysExersicesInterface = {}
+      for (let i = 1; i <= Number(daysCount); i++) {
+        newDaysExersices[`day${i}`] = [{ name: '', reps: '', weight: '' }]
+      }
+      setDaysExersices(newDaysExersices);
+      setCurrentStep(FORM_STEP.DAYS_EXERSICES)
+    } else {
+      increaseDay()
+    }
+  }
+
   const handleChangeDays = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     if (/^[1-7]{0,1}$/i.test(value)) {
-      dispatch(setDays(value))
+      setDaysCount(value)
     }
   }
-  const handleChangeReps = (e: any, id: number) => {
+  
+  const handleChangeExersiceName = (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
+    changeExerciseProperty('name', e.target.value, id)
+  }
+
+  const handleChangeReps = (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
     const { value } = e.target
     if (/^[0-9]{0,3}$/i.test(value)) {
-      dispatch(setReps({ value: e.target.value, id }))
+      changeExerciseProperty('reps', value, id)
     }
   }
-  const handleChangeWeight = (e: any, id: number) => {
+
+  const handleChangeWeight = (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
     const { value } = e.target
     if (/^[0-9]{0,3}$/i.test(value)) {
-      dispatch(setWeight({ value: e.target.value, id }))
+      changeExerciseProperty('weight', value, id)
     }
   }
-  const validation = () => {
+
+  const validate = () => {
     const name = Object.values(exercises).map(e => (!e.name ? false : true))
     const reps = Object.values(exercises).map(e => (!e.reps ? false : true))
     const weight = Object.values(exercises).map(e => (!e.weight ? false : true))
     return !(name.includes(false) || reps.includes(false) || weight.includes(false))
   }
 
-  const addSystemHandler = async () => {
-    try {
-      const data = await createSystem(name, daysExersices)
-      dispatch(setUserSystems(data))
-      setCurrentStep(FORM_STEP.FINISH)
-    } catch (e: any) {
-      alert(e)
-    }
+  const addSystemHandler = () => {
+    createSystem(name, daysExersices)
+      .then(() => setCurrentStep(FORM_STEP.FINISH))
+      .catch((e) => alert(e))
   }
 
   if (currentStep === FORM_STEP.FINISH) {
     setTimeout(() => {
-      dispatch(cleanStore()) // fix
       navigate('/')
     }, 1000)
   }
@@ -101,7 +115,7 @@ export const SystemCreatingMenu: FC = () => {
           {currentStep === FORM_STEP.GENERAL_INFO && (
             <GeneralInfo
               name={name}
-              days={days}
+              days={daysCount}
               handleChangeDays={handleChangeDays}
               handleNextClick={handleNextClick}
               handleChangeName={handleChangeName}
@@ -114,10 +128,10 @@ export const SystemCreatingMenu: FC = () => {
               handleChangeReps={handleChangeReps}
               handleChangeWeight={handleChangeWeight}
               handleNextClick={handleNextClick}
-              addExerciseButton={addExerciseButton}
-              decrementHandler={decrementHandler}
-              validation={validation}
-              days={days}
+              addExercise={addExercise}
+              decrementHandler={decreaseDay}
+              validate={validate}
+              days={daysCount}
               currentDay={currentDay}
               addSystemHandler={addSystemHandler}
             />

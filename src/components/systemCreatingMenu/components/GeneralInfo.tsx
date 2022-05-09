@@ -15,15 +15,14 @@ export const GeneralInfo: FC<Props> = ({ name, days, handleChangeName, handleCha
     <div className={styles.container}>
       <div className={styles.textFieldContainer}>
         <TextField
-          id='outlined-basic'
           label='Name'
           variant='outlined'
           className={styles.input}
           value={name}
           onChange={handleChangeName}
+          autoFocus
         />
         <TextField
-          id='outlined-basic'
           label='Days'
           variant='outlined'
           className={styles.input}

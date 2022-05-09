@@ -1,11 +1,11 @@
 import axios from 'axios'
 
-const $host = axios.create({
-  baseURL: 'http://localhost:5000/'
+const host = axios.create({
+  baseURL: process.env.REACT_APP_API_HOST
 })
 
-const $authHost = axios.create({
-  baseURL: 'http://localhost:5000/'
+const authHost = axios.create({
+  baseURL: process.env.REACT_APP_API_HOST
 })
 
 const authInterceptor = (config: any) => {
@@ -13,6 +13,6 @@ const authInterceptor = (config: any) => {
   return config
 }
 
-$authHost.interceptors.request.use(authInterceptor)
+authHost.interceptors.request.use(authInterceptor)
 
-export { $host, $authHost }
+export { host, authHost }

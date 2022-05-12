@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import styles from './SystemCard.module.scss'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 type Props = {
   name: string
@@ -10,19 +10,25 @@ type Props = {
 }
 
 export const SystemCard: FC<Props> = ({ name, daysCount, exercisesCount, path }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(path)
+  }
+
   return (
-    <Link className={styles.link} to={path}>
-      <div className={styles.systemCard}>
-        <div className={styles.systemName}>{name}</div>
-        <div className={styles.systemInfo}>
-          <p>
-            Days: <span>{daysCount}</span>
-          </p>
-          <p>
-            Exercises: <span>{exercisesCount}</span>
-          </p>
-        </div>
+    <div className={styles.systemCard} onClick={handleClick}>
+      <div className={styles.systemName}>{name}</div>
+      <div className={styles.systemInfo}>
+        <p>
+          <span className={styles.label}>Days</span>
+          <span className={styles.value}>{daysCount}</span>
+        </p>
+        <p>
+          <span className={styles.label}>Exercises</span>
+          <span className={styles.value}>{exercisesCount}</span>
+        </p>
       </div>
-    </Link>
+    </div>
   )
 }

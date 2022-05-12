@@ -7,6 +7,7 @@ import { getSystems } from '../../../../../http/systemsApi'
 export const SystemDaysInfo = () => {
   const dispatch = useTypeDispatch()
   const { systemId }: any = useParams()
+  console.log(systemId)
   // приходя из systems видит system.exer... , а просто по url systems/n - крашит
   useEffect(() => {
     dispatch(getSystems())
@@ -19,7 +20,7 @@ export const SystemDaysInfo = () => {
   
   return (
     <div className={styles.container}>
-      {daysKeysArray.map((e, index) => (
+      {daysKeysArray?.map((e, index) => (
         <Link to={`${path}/day${index + 1}`}>
           <div className={styles.dayContainer}>{e}</div>
         </Link>

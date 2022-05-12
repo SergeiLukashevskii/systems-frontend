@@ -1,55 +1,60 @@
-.link {
-  text-decoration: none;
-}
-
 .systemCard {
-  margin-top: 15px;
-  margin-left: 10px;
   width: 200px;
   overflow: hidden;
   transition: all 0.15s ease-in-out;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
+  border-radius: 8px;
 
   &:hover {
     cursor: pointer;
-    box-shadow: 0px 0px 23px 2px rgba(34, 60, 80, 0.16);
-    transform: scaleX(1.05) scaleY(1.05);
+    box-shadow: 0px 0px 23px 2px rgba(34, 60, 80, 0.08);
+    transform: scaleX(1.04) scaleY(1.04);
+    
+    .systemName { 
+      background-color: #1876d1;
+    }
+
+    .systemInfo {
+      border-color: #1876d1;
+    }
   }
 
   .systemName {
-    background-color: #1876d1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    padding-left: 5px;
-    padding-right: 5px;
-    font-size: 14px;
-    font-weight: bold;
+    background-color: #2a85e0;
+    transition: all 0.15s ease-in-out;
+    padding: 6px 10px;
+    font-size: 15px;
+    font-weight: 500;
     color: #ffffff;
   }
 
   .systemInfo {
-    background-color: #f1f1f1;
-    padding: 20px 14px 14px 14px;
-    border-color: #1876d1;
+    padding: 14px 16px 10px 14px;
+    transition: all 0.15s ease-in-out;
+    border-color: #2a85e0;
     border-style: solid;
-    border-left-width: 2px;
-    border-right-width: 2px;
-    border-bottom-width: 2px;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
     border-top: none;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
+
     > p {
+      display: flex;
+      justify-content: space-between;
       margin-bottom: 8px;
       font-size: 14px;
-      color: rgb(0, 151, 151);
 
-      > span {
+
+      > .value {
         color: #1876d1;
-        font-weight: bold;
+        font-weight: 600;
+        font-style: italic;
+      }
+
+      > .label {
+        color: #009797;
+        font-weight: 400;
       }
     }
 

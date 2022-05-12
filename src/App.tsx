@@ -8,9 +8,9 @@ import { Profile } from './components/pages/profile/Profile'
 import { SystemsPage } from './components/pages/systemsPage/SystemsPage'
 import { SystemDaysInfo } from './components/pages/systemsPage/components/systemDaysInfo/SystemDaysInfo'
 import { SystemExecisesInfo } from './components/pages/systemsPage/components/systemExecisesInfo/SystemExecisesInfo'
+import { RequireAuth } from './RequireAuth'
 import { getUser } from './http/userApi'
 import { useTypeDispatch } from './store/store'
-import { CheckUser } from './CheckUser'
 
 const App = () => {
   const dispatch = useTypeDispatch()
@@ -26,13 +26,11 @@ const App = () => {
         <Routes>
           <Route path='/login' element={<Login />} />
           <Route path='/registration' element={<Login />} />
-          {/* <CheckUser> */}
-          <Route path='/creating' element={<SystemCreatingMenu />} />
-          <Route path='/profile' element={<Profile />} />
-          <Route path='/systems' element={<SystemsPage />} />
-          <Route path='/systems/:systemId' element={<SystemDaysInfo />} />
-          <Route path='/systems/:systemId/:dayId' element={<SystemExecisesInfo />} />
-          {/* </CheckUser> */}
+          <Route path='/creating' element={<RequireAuth><SystemCreatingMenu /></RequireAuth>} />
+          <Route path='/profile' element={<RequireAuth><Profile /></RequireAuth>} />
+          <Route path='/systems' element={<RequireAuth><SystemsPage /></RequireAuth>} />
+          <Route path='/systems/:systemId' element={<RequireAuth><SystemDaysInfo /></RequireAuth>} />
+          <Route path='/systems/:systemId/:dayId' element={<RequireAuth><SystemExecisesInfo /></RequireAuth>} />
         </Routes>
       </div>
     </BrowserRouter>

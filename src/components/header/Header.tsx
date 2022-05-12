@@ -8,7 +8,7 @@ export const Header = () => {
   const user = useTypeSelector(state => state.user)
 
   return (
-    <div style={{ width: '100%', marginBottom: 50 }}>
+    <div style={{ width: '100%' }}>
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position='sticky'>
           <Toolbar>

@@ -16,6 +16,7 @@
     "@types/react": "^18.0.8",
     "@types/react-dom": "^18.0.0",
     "axios": "^0.27.2",
+    "classnames": "^2.3.1",
     "i": "^0.3.7",
     "jwt-decode": "^3.1.2",
     "npm": "^8.8.0",

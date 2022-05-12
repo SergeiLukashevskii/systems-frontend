@@ -1,11 +1,6 @@
 .systemsList {
   display: flex;
-
-  > * {
-    margin-right: 20px;
-  }
-
-  :last-child {
-    margin-right: 0;
-  }
+  flex-wrap: wrap;
+  max-width: 1000px;
+  justify-content: center;
 }

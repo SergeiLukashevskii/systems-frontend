@@ -3,7 +3,7 @@ import styles from '../header/Header.module.scss'
 import { Box, Menu, MenuItem, Button, ListItemIcon, IconButton, Tooltip } from '@mui/material'
 import { Logout } from '@mui/icons-material'
 import { Link, useNavigate } from 'react-router-dom'
-import { setUser } from '../../store/mainReducer'
+import { cleanStore, setUser } from '../../store/mainReducer'
 import { useTypeDispatch } from '../../store/store'
 
 export const ProfileButton = (button: any) => {
@@ -82,6 +82,7 @@ export const ProfileButton = (button: any) => {
             dispatch(setUser(null))
             localStorage.removeItem('token')
             navigate('/')
+            dispatch(cleanStore())
           }}
         >
           <ListItemIcon>

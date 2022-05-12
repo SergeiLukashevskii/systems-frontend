@@ -1,13 +1,14 @@
 import { FC } from 'react'
-import { TextField, Button } from '@mui/material'
 import styles from '../index.module.scss'
+import { TextField, Button } from '@mui/material'
+
 
 interface Props {
   name: string | number
   days: string | number
   handleChangeName: (e: React.ChangeEvent<HTMLInputElement>) => void
   handleChangeDays: (e: React.ChangeEvent<HTMLInputElement>) => void
-  handleNextClick: (e:React.MouseEvent<HTMLButtonElement>) => void
+  handleNextClick: () => void
 }
 
 export const GeneralInfo: FC<Props> = ({ name, days, handleChangeName, handleChangeDays, handleNextClick }) => {
@@ -22,13 +23,7 @@ export const GeneralInfo: FC<Props> = ({ name, days, handleChangeName, handleCha
           onChange={handleChangeName}
           autoFocus
         />
-        <TextField
-          label='Days'
-          variant='outlined'
-          className={styles.input}
-          value={days}
-          onChange={handleChangeDays}
-        />
+        <TextField label='Days' variant='outlined' className={styles.input} value={days} onChange={handleChangeDays} />
       </div>
       <Button
         variant='contained'

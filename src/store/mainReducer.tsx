@@ -1,19 +1,20 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { getSystems, getUser } from '../http/systemsApi'
+import { getSystems } from '../http/systemsApi'
+import { getUser } from '../http/userApi'
 
 interface State {
   user: null | UserInfo
-  systems: null | System[]
+  systems: [] | System[]
 }
 
 interface System {
   userId: string
   name: string
   daysCount: number
-  exersices: DaysExersicesInterface
-  _id: string
+  exercises: DaysExercisesInterface
+  id: string
 }
-export interface DaysExersicesInterface {
+export interface DaysExercisesInterface {
   [key: string]: Exercise[]
 }
 
@@ -43,23 +44,24 @@ const mainReducer = createSlice({
     setUser: (state, action: PayloadAction<UserInfo | null>) => {
       state.user = action.payload
     },
-    setUserSystems: (state, action: PayloadAction<any>) => {
-      console.log(action.payload.systems)
-      state.systems = action.payload.systems
-    }
-  },
-  extraReducers: {
-    [getSystems.fulfilled]: (state, action) => {
+    setUserSystems: (state, action: PayloadAction<State>) => {
       state.systems = action.payload.systems
     },
-    [getUser.fulfilled]: (state, action) => {
-      state.user = action.payload.user
+    cleanStore: state => {
+      state.user = null
+      state.systems = []
     }
+  },
+  extraReducers: buldier => {
+    buldier
+      .addCase(getUser.fulfilled, (state, action: PayloadAction<State>) => {
+        state.user = action.payload.user
+      })
+      .addCase(getSystems.fulfilled, (state, action: PayloadAction<State>) => {
+        state.systems = action.payload.systems
+      })
   }
 })
 
 export default mainReducer.reducer
-export const {
-  setUser,
-  setUserSystems
-} = mainReducer.actions
+export const { setUser, setUserSystems, cleanStore } = mainReducer.actions

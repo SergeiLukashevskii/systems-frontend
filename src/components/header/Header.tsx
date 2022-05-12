@@ -1,11 +1,10 @@
-import { FC } from 'react'
+import styles from './Header.module.scss'
 import { Link } from 'react-router-dom'
 import { AppBar, Box, Toolbar, Typography, Button, IconButton } from '@mui/material'
-import styles from './Header.module.scss'
 import { useTypeSelector } from '../../store/store'
 import { ProfileButton } from './ProfileButton'
 
-export const Header: FC = () => {
+export const Header = () => {
   const user = useTypeSelector(state => state.user)
 
   return (
@@ -16,16 +15,7 @@ export const Header: FC = () => {
             <IconButton size='large' edge='start' color='inherit' aria-label='menu' sx={{ mr: 2 }}></IconButton>
             <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
               <Link className={styles.loginButton} to={'/creating'}>
-                <Button
-                  color='inherit'
-                  onClick={() => {
-                    if (!user) {
-                      alert('you need to login')
-                    }
-                  }}
-                >
-                  Create a system
-                </Button>
+                <Button color='inherit'>Create a system</Button>
               </Link>
             </Typography>
             {user ? (

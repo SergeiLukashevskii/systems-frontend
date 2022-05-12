@@ -1,11 +1,10 @@
 import { useState } from 'react'
 import styles from './Login.module.scss'
 import { TextField, Button } from '@mui/material'
-import { login, registration } from '../../../http/userApi'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { setUser } from '../../../store/mainReducer'
+import { useLocation, useNavigate, Link } from 'react-router-dom'
 import { useTypeDispatch } from '../../../store/store'
-import { Link } from 'react-router-dom'
+import { login, registration } from '../../../http/userApi'
+import { setUser } from '../../../store/mainReducer'
 
 export const Login = () => {
   const isLogin = useLocation().pathname === '/login'
@@ -30,7 +29,6 @@ export const Login = () => {
         data = await registration(email, password)
         dispatch(setUser(data))
       }
-
       navigate('/profile')
     } catch (e: any) {
       alert(e.response.data.message)
@@ -53,7 +51,7 @@ export const Login = () => {
           className={styles.input}
           value={password}
           onChange={handleChangePassword}
-          type="password"
+          type='password'
         />
         {isLogin ? (
           <Link style={{ marginTop: 130, textDecoration: 'none' }} to={'/registration'}>

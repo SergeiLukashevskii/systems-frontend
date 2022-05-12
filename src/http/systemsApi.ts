@@ -1,22 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { authHost } from './index'
+import { DaysExercisesInterface } from '../store/mainReducer'
 
-export const createSystem = async (name: any, exersices: any) => {
-  const { data } = await authHost.post('/systems', { name, exersices })
+export const createSystem = async (name: string, exercises: DaysExercisesInterface) => {
+  const { data } = await authHost.post('/systems', { name, exercises })
   return data
 }
 
-export const getSystems: any = createAsyncThunk('reducer/getSystems', async () => {
+export const getSystems = createAsyncThunk('reducer/getSystems', async () => {
   const { data } = await authHost.get('/systems')
   return data
-})
-
-export const getUser: any = createAsyncThunk('reducer/getUser', async (_, {rejectWithValue}) => {
-  try {
-    const { data } = await authHost.get('/user')
-    return data
-  } catch(e: any) {
-    localStorage.removeItem('/token')
-    return rejectWithValue(e.message)
-  }
 })
